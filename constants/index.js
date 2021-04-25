@@ -1,8 +1,16 @@
-import { getRandom } from './utils.js';
+export const $chat = document.querySelector('.chat');
+export const $formFight = document.querySelector('.control');
+export const $arenas = document.querySelector('.arenas');
 
-const $chat = document.querySelector('.chat');
+export const HIT = {
+    head: 30,
+    body: 25,
+    foot: 20
+}
 
-const logs = {
+export const ATTACK = ['head', 'body', 'foot'];
+
+export const LOGS = {
     start: 'Часы показывали [time], когда [player1] и [player2] бросили вызов друг другу.',
     end: [
         'Результат удара [playerWins]: [playerLose] - труп',
@@ -41,35 +49,3 @@ const logs = {
     ],
     draw: 'Ничья - это тоже победа!'
 };
-
-function generateLogs(type, player1, player2, color, damage = 0) {
-    let text;
-
-    const time = new Date();
-    const timeString = `${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}`;
-
-    const fightText = logs[type][getRandom(logs[type].length - 1)].replace('[playerKick]', player1.name).replace('[playerDefence]', player2.name);
-    
-    switch (type) {
-        case 'start':
-            text = logs.start.replace('[player1]', player1.name).replace('[player2]', player2.name).replace('[time]', timeString);
-            break;
-        case 'hit':
-            text = `${timeString} ${fightText} -${damage} [${player2.hp}/100]`;
-            break;
-        case 'defence':
-            text = `${timeString} ${fightText}`;
-            break;
-        case 'draw':
-            text = logs.draw;
-            break;
-        case 'end':
-            text = logs[type][getRandom(logs[type].length - 1)].replace('[playerWins]', player1.name).replace('[playerLose]', player2.name);
-            break;
-    }
-
-    const el = `<p style="color: ${color}">${text}</p>`;
-    $chat.insertAdjacentHTML('afterbegin', el);
-}
-
-export default generateLogs;
